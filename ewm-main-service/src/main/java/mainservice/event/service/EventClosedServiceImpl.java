@@ -14,10 +14,6 @@ import mainservice.event.repository.EventRepository;
 import mainservice.exceptions.ConflictException;
 import mainservice.exceptions.NotFoundException;
 import mainservice.exceptions.ValidationException;
-import mainservice.request.dto.RequestDto;
-import mainservice.request.mapper.RequestMapper;
-import mainservice.request.model.Request;
-import mainservice.request.model.RequestState;
 import mainservice.request.repository.RequestRepository;
 import mainservice.user.repository.UserRepository;
 import mainservice.utils.FromSizeRequest;
@@ -28,7 +24,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static mainservice.event.mapper.EventMapper.toEventShortDto;
@@ -165,62 +160,6 @@ public class EventClosedServiceImpl implements  EventClosedService {
         EventFullDto eventFullDto = EventMapper.toEventFullDto(eventRepository.save(event));
         log.info("cancel event" + eventId);
         return eventFullDto;
-    }
-
-    @Override
-    public List<RequestDto> getRequests(Long userId, Long eventId) {
-        eventValidation(eventId);
-        userValidation(userId);
-        Event event = eventRepository.findById(eventId).get();
-        initiatorValidation(userId, event.getInitiator().getId());
-
-        List<RequestDto> dtos = requestRepository.findByEventId(eventId).stream()
-                .map(RequestMapper::toRequestDto)
-                .collect(Collectors.toList());
-        log.info("get Requests. UserId:" + userId + " .Event id: " + eventId);
-        return dtos;
-    }
-
-    @Override
-    @Transactional
-    public RequestDto confirmRequest(Long userId, Long eventId, Long reqId) {
-        eventValidation(eventId);
-        userValidation(userId);
-        EventFullDto eventFullDto = EventMapper.toEventFullDto(eventRepository.findById(eventId).get());
-        if (!eventFullDto.getInitiator().getId().equals(userId)) {
-            throw new ConflictException("Can only be confirmed by the initiator");
-        }
-        if (!eventFullDto.getState().equals(EventStatus.PUBLISHED)) {
-            throw new ConflictException("Cannot confirm a request to participate in an unpublished event");
-        }
-        if (eventFullDto.getConfirmedRequests() == eventFullDto.getParticipantLimit()) {
-            throw new ConflictException("Participant limit reached");
-        }
-        Request request = requestRepository.findById(reqId).get();
-        request.setStatus(RequestState.CONFIRMED);
-        RequestDto dto = RequestMapper.toRequestDto(requestRepository.save(request));
-        log.info("confirm Requests. UserId:" + userId + " .Event id: " + eventId);
-        return dto;
-    }
-
-    @Override
-    @Transactional
-    public RequestDto rejectRequest(Long userId, Long eventId, Long reqId) {
-        eventValidation(eventId);
-        userValidation(userId);
-
-        EventFullDto eventFullDto = EventMapper.toEventFullDto(eventRepository.findById(eventId).get());
-        if (!eventFullDto.getInitiator().getId().equals(userId)) {
-            throw new ConflictException("Can only be confirmed by the initiator");
-        }
-        if (!eventFullDto.getState().equals(EventStatus.PUBLISHED)) {
-            throw new ConflictException("Cannot confirm a request to participate in an unpublished event");
-        }
-        Request request = requestRepository.findById(reqId).get();
-        request.setStatus(RequestState.REJECTED);
-        RequestDto dto = RequestMapper.toRequestDto(requestRepository.save(request));
-        log.info("reject Requests. UserId:" + userId + " .Event id: " + eventId);
-        return dto;
     }
 
     private void userValidation(Long id) {

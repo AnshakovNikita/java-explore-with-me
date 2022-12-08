@@ -4,7 +4,6 @@ import mainservice.event.dto.EventFullDto;
 import mainservice.event.dto.EventShortDto;
 import mainservice.event.dto.NewEventDto;
 import mainservice.event.dto.UpdateEventRequest;
-import mainservice.request.dto.RequestDto;
 
 import java.util.List;
 
@@ -19,9 +18,4 @@ public interface EventClosedService {
 
     EventFullDto cancelEvent(Long userId, Long eventId);
 
-    List<RequestDto> getRequests(Long userId, Long eventId);
-
-    RequestDto confirmRequest(Long userId, Long eventId, Long reqId);
-
-    RequestDto rejectRequest(Long userId, Long eventId, Long reqId);
 }
