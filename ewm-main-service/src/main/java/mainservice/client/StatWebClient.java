@@ -28,14 +28,14 @@ public class StatWebClient {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
-    public StatWebClient(@Value("${explore-server.url}") String serverUrl) {
-        final DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory("http://localhost:9090");
+    public StatWebClient(@Value("${stats-server.url}") String serverUrl) {
+        final DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(serverUrl);
         factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE);
         client = WebClient
                 .builder()
                 .uriBuilderFactory(factory)
                 .defaultHeader("Content-Type", "application/json")
-                .baseUrl("http://localhost:9090")
+                .baseUrl(serverUrl)
                 .build();
     }
 
