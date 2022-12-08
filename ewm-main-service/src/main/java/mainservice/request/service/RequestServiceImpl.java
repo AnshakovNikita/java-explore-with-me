@@ -100,7 +100,7 @@ public class RequestServiceImpl implements RequestService {
                 .orElseThrow(() ->
                         new NotFoundException("События не существует."));
         if (!event.getRequestModeration()) {
-            if (Objects.equals(event.getInitiator(), userId)) {
+            if (Objects.equals(event.getInitiator().getId(), userId)) {
                 throw new ValidationException("Организатор не может стать участником события.");
             }
             if (!event.getState().equals(EventStatus.PUBLISHED)) {
