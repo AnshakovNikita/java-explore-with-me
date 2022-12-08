@@ -1,14 +1,11 @@
 package mainservice.event.mapper;
 
 import mainservice.category.mapper.CategoryMapper;
-import mainservice.category.model.Category;
 import mainservice.event.dto.EventFullDto;
 import mainservice.event.dto.EventShortDto;
 import mainservice.event.dto.Location;
-import mainservice.event.dto.NewEventDto;
 import mainservice.event.model.Event;
 import mainservice.user.mapper.UserMapper;
-import mainservice.user.model.User;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

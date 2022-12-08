@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-import static mainservice.event.mapper.EventMapper.toEvent;
 import static mainservice.event.mapper.EventMapper.toEventShortDto;
 
 @Service

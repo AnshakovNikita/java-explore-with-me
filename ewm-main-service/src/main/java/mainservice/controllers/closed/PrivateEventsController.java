@@ -8,11 +8,9 @@ import mainservice.event.dto.NewEventDto;
 import mainservice.event.dto.UpdateEventRequest;
 import mainservice.event.service.EventClosedService;
 import mainservice.exceptions.ValidationException;
-import mainservice.request.dto.RequestDto;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
