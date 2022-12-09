@@ -1,6 +1,7 @@
 package mainservice.user.service;
 
 import mainservice.exceptions.ConflictException;
+import mainservice.exceptions.ValidationException;
 import mainservice.user.dto.UserDto;
 import mainservice.user.mapper.UserMapper;
 import mainservice.user.model.User;
@@ -25,9 +26,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto saveUser(UserDto userDto) {
+        if (userDto.getName() == null || userDto.getName().isBlank()) {
+            throw new ValidationException(String.format("%s - некорректное имя пользователя.", userDto.getName()));
+        }
+
         try {
             return toUserDto(userRepository.save(toUser(userDto)));
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new ConflictException(String.format("%s - такое имя уже существует.", userDto.getName()));
         }
     }
@@ -49,4 +54,9 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
+
+    /*public void userValid(Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new ConflictException(String.format("%s - такое имя уже существует.", userId)));
+    } */
 }

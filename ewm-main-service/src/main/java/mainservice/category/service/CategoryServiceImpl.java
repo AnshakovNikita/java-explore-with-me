@@ -29,6 +29,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto saveCategory(NewCategoryDto newCategoryDto) {
+        if (newCategoryDto.getName() == null) {
+            throw new ValidationException("имя категории не может быть пустым.");
+        }
+
         try {
             return toCategoryDto(categoryRepository.save(toCategory(newCategoryDto)));
         } catch (RuntimeException e) {
@@ -38,6 +42,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto updateCategory(NewCategoryDto newCategoryDto) {
+        if (newCategoryDto.getName() == null) {
+            throw new ValidationException("имя категории не может быть пустым.");
+        }
+
         try {
             return toCategoryDto(categoryRepository.save(toCategory(newCategoryDto)));
         } catch (RuntimeException e) {

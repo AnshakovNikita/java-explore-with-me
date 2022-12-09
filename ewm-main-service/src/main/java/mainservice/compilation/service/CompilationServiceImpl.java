@@ -7,6 +7,7 @@ import mainservice.compilation.repository.CompilationRepository;
 import mainservice.event.model.Event;
 import mainservice.event.repository.EventRepository;
 import mainservice.exceptions.NotFoundException;
+import mainservice.exceptions.ValidationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,10 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public CompilationDto saveCompilation(NewCompilationDto newCompilationDto) {
+        if (newCompilationDto.getTitle() == null || newCompilationDto.getTitle().isBlank()) {
+            throw new ValidationException("Заголовок подборки не может быть пустым.");
+        }
+
         Set<Event> events = new HashSet<>(eventRepository.findAllById(newCompilationDto.getEvents()));
         Compilation compilation = compilationRepository.save(toCompilationFromNew(newCompilationDto, events));
         compilation.setEvents(events);

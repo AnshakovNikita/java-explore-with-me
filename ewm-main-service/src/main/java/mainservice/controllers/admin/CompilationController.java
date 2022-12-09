@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import mainservice.compilation.dto.CompilationDto;
 import mainservice.compilation.dto.NewCompilationDto;
 import mainservice.compilation.service.CompilationServiceImpl;
-import mainservice.exceptions.ValidationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,9 +19,6 @@ public class CompilationController {
 
     @PostMapping("/compilations")
     public CompilationDto saveCompilation(@RequestBody NewCompilationDto newCompilationDto) {
-        if (newCompilationDto.getTitle() == null || newCompilationDto.getTitle().isBlank()) {
-            throw new ValidationException("Заголовок подборки не может быть пустым.");
-        }
         log.info("save compilation={}", newCompilationDto);
         return compilationService.saveCompilation(newCompilationDto);
     }

@@ -7,7 +7,6 @@ import mainservice.event.dto.EventShortDto;
 import mainservice.event.dto.NewEventDto;
 import mainservice.event.dto.UpdateEventRequest;
 import mainservice.event.service.EventClosedService;
-import mainservice.exceptions.ValidationException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,12 +41,6 @@ public class PrivateEventsController {
     @PostMapping
     EventFullDto createEvent(@PathVariable Long userId,
                              @RequestBody NewEventDto event) {
-        if (event.getTitle() == null || event.getTitle().isBlank()) {
-            throw new ValidationException("Событие составлено некорректно");
-        }
-        if (event.getAnnotation() == null || event.getAnnotation().isBlank()) {
-            throw new ValidationException("Событие составлено некорректно");
-        }
         EventFullDto dto = eventService.postEvent(userId, event);
         log.info("create Event: " + userId);
         return dto;

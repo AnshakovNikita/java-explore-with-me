@@ -35,7 +35,6 @@ import static mainservice.event.mapper.EventMapper.toEventShortDto;
 public class EventClosedServiceImpl implements  EventClosedService {
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
-    private final RequestRepository requestRepository;
     private final UserRepository userRepository;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -105,6 +104,14 @@ public class EventClosedServiceImpl implements  EventClosedService {
     @Transactional
     public EventFullDto postEvent(Long userId, NewEventDto dto) {
         userValidation(userId);
+
+        if (dto.getTitle() == null || dto.getTitle().isBlank()) {
+            throw new ValidationException("Событие составлено некорректно");
+        }
+        if (dto.getAnnotation() == null || dto.getAnnotation().isBlank()) {
+            throw new ValidationException("Событие составлено некорректно");
+        }
+
         LocalDateTime now = LocalDateTime.now();
         if (LocalDateTime.parse(dto.getEventDate(), formatter).isBefore(now.plusHours(2))) {
             throw new ValidationException("Событие должно начаться не раньшем, чем через два часа от текущего времени");

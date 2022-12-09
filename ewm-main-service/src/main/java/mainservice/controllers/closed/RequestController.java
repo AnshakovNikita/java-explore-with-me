@@ -1,7 +1,6 @@
 package mainservice.controllers.closed;
 
 import lombok.extern.slf4j.Slf4j;
-import mainservice.exceptions.ValidationException;
 import mainservice.request.dto.RequestDto;
 import mainservice.request.service.RequestServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +22,6 @@ public class RequestController {
     public RequestDto saveRequest(@PathVariable Long userId,
                                   @RequestParam(name = "eventId", required = false) Long eventId) {
         log.info("Creating request userId={}, eventId={}", userId, eventId);
-
-        if (eventId == null) {
-            throw new ValidationException("Поле ID события не может быть пустым");
-        }
-
         return requestService.saveRequest(userId, eventId);
     }
 

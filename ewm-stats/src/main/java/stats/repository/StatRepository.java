@@ -12,18 +12,21 @@ import java.util.List;
 @Repository
 public interface StatRepository extends JpaRepository<Stat, Long> {
 
-    @Query(value = "SELECT DISTINCT s.uri FROM Stat s " +
-            "WHERE s.uri IN (:uris) AND s.timestamp>:start AND s.timestamp<:end")
-    List<Stat> findAllByUniqUris(@Param("uris") List<String> uris,
-                                 @Param("start") LocalDateTime start,
-                                 @Param("end") LocalDateTime end);
+    @Query(value = "select app, uri, count(distinct ip) hits " +
+            " from stats " +
+            " where timestamp between ?1 and ?2" +
+            "       and uri in ?3" +
+            " group by app, uri",
+            nativeQuery = true)
+    List<Object[]> getEndpointHitsUnique(LocalDateTime startFormatted, LocalDateTime endFormatted,
+                                         List<String> uris);
 
-    @Query("SELECT s FROM Stat s" +
-            " WHERE s.uri IN (:uris) AND s.timestamp BETWEEN :start AND :end")
-    List<Stat> findAllByUris(@Param("uris") List<String> uris,
-                             @Param("start") LocalDateTime start,
-                             @Param("end") LocalDateTime end);
-
-    @Query("SELECT COUNT(s.uri) FROM Stat s WHERE s.uri=:uri ")
-    Long countByUri(@Param("uri") String uri);
+    @Query(value = "select app, uri, count(ip) hits " +
+            " from stats " +
+            " where timestamp between ?1 and ?2" +
+            "       and uri in ?3" +
+            " group by app, uri",
+            nativeQuery = true)
+    List<Object[]> getEndpointHitsNotUnique(LocalDateTime startFormatted, LocalDateTime endFormatted,
+                                            List<String> uris);
 }

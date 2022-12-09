@@ -33,6 +33,11 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public RequestDto saveRequest(Long userId, Long eventId) {
+
+        if (eventId == null) {
+            throw new ValidationException("Поле ID события не может быть пустым");
+        }
+
         validateRequestSave(userId, eventId);
         RequestDto requestDto = RequestDto.builder()
                 .requester(userId)

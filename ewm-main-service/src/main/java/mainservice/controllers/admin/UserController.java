@@ -2,7 +2,6 @@ package mainservice.controllers.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mainservice.exceptions.ValidationException;
 import mainservice.user.dto.UserDto;
 import mainservice.user.service.UserService;
 import org.springframework.validation.annotation.Validated;
@@ -29,9 +28,6 @@ public class UserController {
 
     @PostMapping
     public UserDto saveUser(@RequestBody UserDto userDto) {
-        if (userDto.getName() == null || userDto.getName().isBlank()) {
-            throw new ValidationException(String.format("%s - некорректное имя пользователя.", userDto.getName()));
-        }
         UserDto dto = userService.saveUser(userDto);
         log.info("save User: " + userDto);
         return dto;
@@ -41,6 +37,5 @@ public class UserController {
     public void deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
         log.info("delete User id: " + userId);
-
     }
 }

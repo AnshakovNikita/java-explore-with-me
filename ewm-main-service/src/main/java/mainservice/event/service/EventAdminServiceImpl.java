@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -31,6 +32,10 @@ public class EventAdminServiceImpl implements EventAdminService {
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    private static final List<EventStatus> STATUS_LIST = Arrays.asList(EventStatus.PENDING,
+                                                                       EventStatus.CANCELED,
+                                                                       EventStatus.PUBLISHED);
 
     @Override
     public List<EventFullDto> getEvents(List<Long> users, List<EventStatus> statusList,
@@ -61,10 +66,7 @@ public class EventAdminServiceImpl implements EventAdminService {
         }
 
         if (statusList == null) {
-            statusList = new ArrayList<>();
-            statusList.add(EventStatus.PENDING);
-            statusList.add(EventStatus.CANCELED);
-            statusList.add(EventStatus.PUBLISHED);
+            statusList = STATUS_LIST;
         }
 
         List<Event> events = new ArrayList<>();
