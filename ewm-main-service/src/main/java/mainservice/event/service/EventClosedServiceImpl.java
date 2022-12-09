@@ -14,7 +14,6 @@ import mainservice.event.repository.EventRepository;
 import mainservice.exceptions.ConflictException;
 import mainservice.exceptions.NotFoundException;
 import mainservice.exceptions.ValidationException;
-import mainservice.request.repository.RequestRepository;
 import mainservice.user.repository.UserRepository;
 import mainservice.utils.FromSizeRequest;
 import org.springframework.data.domain.Pageable;

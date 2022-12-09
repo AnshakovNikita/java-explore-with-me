@@ -54,9 +54,4 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
-
-    /*public void userValid(Long userId) {
-        userRepository.findById(userId)
-                .orElseThrow(() -> new ConflictException(String.format("%s - такое имя уже существует.", userId)));
-    } */
 }
