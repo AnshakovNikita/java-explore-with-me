@@ -34,8 +34,8 @@ public class EventPublicServiceImpl implements EventPublicService {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private static final LocalDateTime START_FOR_COLLECTING_STAT = LocalDateTime.now().minusYears(10);
-    private static final LocalDateTime RANGE_END_FOR_COLLECTING_EVENTS = LocalDateTime.now().plusYears(300);
+    private static final int START_FOR_COLLECTING_STAT = 10;
+    private static final int RANGE_END_FOR_COLLECTING_EVENTS = 300;
 
 
     @Override
@@ -44,7 +44,7 @@ public class EventPublicServiceImpl implements EventPublicService {
                                          Boolean onlyAvailable, String sort,
                                          Integer from, Integer size, HttpServletRequest request) {
         rangeStart = (rangeStart != null) ? rangeStart : LocalDateTime.now();
-        rangeEnd = (rangeEnd != null) ? rangeEnd : RANGE_END_FOR_COLLECTING_EVENTS;
+        rangeEnd = (rangeEnd != null) ? rangeEnd : LocalDateTime.now().plusYears(RANGE_END_FOR_COLLECTING_EVENTS);
         createStat(request);
         if (rangeStart.isAfter(rangeEnd)) {
             throw new ValidationException("The end date and time of the event cannot " +
@@ -101,7 +101,8 @@ public class EventPublicServiceImpl implements EventPublicService {
     }
 
     private long getViews(HttpServletRequest request, boolean unique) {
-        List<ViewStats> statistics = client.getStats(START_FOR_COLLECTING_STAT, LocalDateTime.now(),
+        List<ViewStats> statistics = client.getStats(LocalDateTime.now().minusYears(START_FOR_COLLECTING_STAT),
+                                                     LocalDateTime.now(),
                                                      Set.of(request.getRequestURI()), unique);
         long views = 0;
         for (ViewStats view : statistics)

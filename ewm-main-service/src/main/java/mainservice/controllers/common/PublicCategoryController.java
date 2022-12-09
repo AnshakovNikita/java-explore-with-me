@@ -1,5 +1,6 @@
 package mainservice.controllers.common;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mainservice.category.dto.CategoryDto;
 import mainservice.category.service.CategoryServiceImpl;
@@ -12,13 +13,10 @@ import java.util.List;
 @RestController
 @RequestMapping
 @Slf4j
+@RequiredArgsConstructor
 public class PublicCategoryController {
 
     private final CategoryServiceImpl categoryService;
-
-    public PublicCategoryController(CategoryServiceImpl categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @GetMapping("/categories/{catId}")
     public CategoryDto getCategoryById(@PathVariable Long catId) {

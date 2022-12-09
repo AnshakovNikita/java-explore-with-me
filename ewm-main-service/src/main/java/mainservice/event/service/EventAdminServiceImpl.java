@@ -33,9 +33,10 @@ public class EventAdminServiceImpl implements EventAdminService {
     private final CategoryRepository categoryRepository;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private static final List<EventStatus> STATUS_LIST = Arrays.asList(EventStatus.PENDING,
+    private static final List<EventStatus> DEFAULT_STATUS_LIST = Arrays.asList(EventStatus.PENDING,
                                                                        EventStatus.CANCELED,
                                                                        EventStatus.PUBLISHED);
+    private static final int RANGE_END_FOR_COLLECTING_EVENTS = 300;
 
     @Override
     public List<EventFullDto> getEvents(List<Long> users, List<EventStatus> statusList,
@@ -59,14 +60,14 @@ public class EventAdminServiceImpl implements EventAdminService {
         }
 
         start = (rangeStart != null) ? start : LocalDateTime.now();
-        end = (rangeEnd != null) ? end : LocalDateTime.now().plusYears(300);
+        end = (rangeEnd != null) ? end : LocalDateTime.now().plusYears(RANGE_END_FOR_COLLECTING_EVENTS);
 
         if (start.isAfter(end)) {
             throw new ValidationException("Ending event before it starts");
         }
 
         if (statusList == null) {
-            statusList = STATUS_LIST;
+            statusList = DEFAULT_STATUS_LIST;
         }
 
         List<Event> events = new ArrayList<>();

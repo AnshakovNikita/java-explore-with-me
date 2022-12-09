@@ -1,5 +1,6 @@
 package mainservice.controllers.admin;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mainservice.compilation.dto.CompilationDto;
 import mainservice.compilation.dto.NewCompilationDto;
@@ -9,13 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/admin")
 @Slf4j
+@RequiredArgsConstructor
 public class CompilationController {
 
     private final CompilationServiceImpl compilationService;
-
-    public CompilationController(CompilationServiceImpl compilationService) {
-        this.compilationService = compilationService;
-    }
 
     @PostMapping("/compilations")
     public CompilationDto saveCompilation(@RequestBody NewCompilationDto newCompilationDto) {

@@ -5,7 +5,6 @@ import mainservice.category.dto.CategoryDto;
 import mainservice.category.dto.NewCategoryDto;
 import mainservice.category.mapper.CategoryMapper;
 import mainservice.category.repository.CategoryRepository;
-import mainservice.exceptions.ConflictException;
 import mainservice.exceptions.NotFoundException;
 import mainservice.exceptions.ValidationException;
 import org.springframework.data.domain.PageRequest;
@@ -33,11 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ValidationException("имя категории не может быть пустым.");
         }
 
-        try {
             return toCategoryDto(categoryRepository.save(toCategory(newCategoryDto)));
-        } catch (RuntimeException e) {
-            throw new ConflictException("Такая категория уже существует.");
-        }
     }
 
     @Override
@@ -46,11 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ValidationException("имя категории не может быть пустым.");
         }
 
-        try {
             return toCategoryDto(categoryRepository.save(toCategory(newCategoryDto)));
-        } catch (RuntimeException e) {
-            throw new ConflictException("Такая категория уже существует.");
-        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package mainservice.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -29,8 +30,8 @@ public class ErrorHandler {
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(ConflictException.class)
-    public ApiError handleDataIntegrityViolationException(ConflictException ex) {
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ApiError handleDataIntegrityViolationException(RuntimeException ex) {
         log.info("ConflictException: {}", ex.getMessage());
         return ApiError.builder()
                 .message(Objects.requireNonNull(ex.getMessage()).split(";")[0])

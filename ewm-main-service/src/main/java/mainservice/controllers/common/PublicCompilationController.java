@@ -1,5 +1,6 @@
 package mainservice.controllers.common;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mainservice.compilation.dto.CompilationDto;
 import mainservice.compilation.service.CompilationServiceImpl;
@@ -12,12 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping
 @Slf4j
+@RequiredArgsConstructor
 public class PublicCompilationController {
     private final CompilationServiceImpl compilationService;
-
-    public PublicCompilationController(CompilationServiceImpl compilationService) {
-        this.compilationService = compilationService;
-    }
 
     @GetMapping("/compilations/{compId}")
     public CompilationDto getCompilationById(@PathVariable Long compId) {

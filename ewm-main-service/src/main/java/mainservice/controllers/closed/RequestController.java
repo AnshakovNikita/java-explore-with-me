@@ -1,5 +1,6 @@
 package mainservice.controllers.closed;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mainservice.request.dto.RequestDto;
 import mainservice.request.service.RequestServiceImpl;
@@ -11,12 +12,9 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/users")
 @Slf4j
+@RequiredArgsConstructor
 public class RequestController {
     private final RequestServiceImpl requestService;
-
-    public RequestController(RequestServiceImpl requestService) {
-        this.requestService = requestService;
-    }
 
     @PostMapping("/{userId}/requests")
     public RequestDto saveRequest(@PathVariable Long userId,

@@ -1,6 +1,5 @@
 package mainservice.user.service;
 
-import mainservice.exceptions.ConflictException;
 import mainservice.exceptions.ValidationException;
 import mainservice.user.dto.UserDto;
 import mainservice.user.mapper.UserMapper;
@@ -30,11 +29,7 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException(String.format("%s - некорректное имя пользователя.", userDto.getName()));
         }
 
-        try {
             return toUserDto(userRepository.save(toUser(userDto)));
-        } catch (RuntimeException e) {
-            throw new ConflictException(String.format("%s - такое имя уже существует.", userDto.getName()));
-        }
     }
 
     @Override
