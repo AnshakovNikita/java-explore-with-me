@@ -8,6 +8,7 @@ import mainservice.comment.mapper.CommentMapper;
 import mainservice.comment.model.Comment;
 import mainservice.comment.repository.CommentRepository;
 import mainservice.event.model.Event;
+import mainservice.event.model.EventStatus;
 import mainservice.event.repository.EventRepository;
 import mainservice.exceptions.ConflictException;
 import mainservice.exceptions.NotFoundException;
@@ -61,6 +62,10 @@ public class CommentServiceImpl implements CommentService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя с id " + userId + " не существует."));
         comment.setAuthor(user);
+
+        if(!event.getState().equals(EventStatus.PUBLISHED)) {
+            throw new ValidationException("Комментировать можно только опубликованные события.");
+        }
 
         Comment commentDB = commentRepository.save(comment);
         log.info("Комментарий " + commentDB.getId() + " создан.");
