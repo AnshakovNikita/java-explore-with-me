@@ -94,7 +94,7 @@ public class CommentServiceImpl implements CommentService {
         }
         Comment comment = getCommentById(updateCommentDto.getId());
         if (!comment.getAuthor().getId().equals(userId)) {
-            throw new ConflictException("Комментарий может редактировать только автор.");
+            throw new ValidationException("Комментарий может редактировать только автор.");
         }
 
         commentRepository.findById(updateCommentDto.getId())
