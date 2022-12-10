@@ -63,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new NotFoundException("Пользователя с id " + userId + " не существует."));
         comment.setAuthor(user);
 
-        if(!event.getState().equals(EventStatus.PUBLISHED)) {
+        if (!event.getState().equals(EventStatus.PUBLISHED)) {
             throw new ValidationException("Комментировать можно только опубликованные события.");
         }
 
